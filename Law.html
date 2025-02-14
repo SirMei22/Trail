@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Crossword</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fce4ec;
+            color: #333;
+            margin: 30px;
+        }
+        .crossword-container {
+            display: grid;
+            grid-template-columns: repeat(15, 35px);
+            grid-template-rows: repeat(15, 35px);
+            gap: 2px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            background-color: white;
+            position: relative;
+        }
+        .cell input {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            border: none;
+            font-size: 18px;
+            background: transparent;
+            text-transform: uppercase;
+        }
+        .cell.correct {
+            background-color: lightgreen;
+        }
+        .cell.incorrect {
+            background-color: lightcoral;
+        }
+        .sup {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .gif-container {
+            margin-top: 20px;
+        }
+        .gif-container img {
+            width: 150px;
+        }
+        .questions-container {
+            text-align: left;
+            width: 60%;
+            margin: auto;
+            font-size: 16px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚖️ Legal Valentine's Crossword ⚖️</h1>
+    <p>Solve the legal-themed crossword puzzle!</p>
+    
+    <div class="gif-container">
+        <img src="https://media.giphy.com/media/xT8qBit7YomT80d0M8/giphy.gif" alt="Balancing Law Scale">
+    </div>
+    
+    <div class="crossword-container" id="crossword"></div>
+
+    <h2>Questions</h2>
+    <div class="questions-container">
+        <p class="question"><sup>1</sup>  A court order commanding someone to do or not do something.</p>
+        <p class="question"><sup>2</sup>  An official charge in a criminal case.</p>
+        <p class="question"><sup>3</sup> A right to keep possession of property until a debt is paid.</p>
+        <p class="question"><sup>4</sup>  The system of rules a government enforces.</p>
+        <p class="question"><sup>5</sup>  A respectful address to a judge.</p>
+        <p class="question"><sup>6</sup> An official promise made in court to tell the truth.</p>
+        <p class="question"><sup>7</sup> A contract where only one party makes a promise.</p>
+        <p class="question"><sup>8</sup>  Temporary release of a suspect before trial.</p>
+        <p class="question"><sup>9</sup> Information presented in court to prove or disprove a fact.</p>
+        <p class="question"><sup>10</sup> A minor crime, less severe than a felony.</p>
+        <p class="question"><sup>11</sup> A legal status for young defendants.</p>
+        <p class="question"><sup>12</sup>  The decision made by a jury.</p>
+        <p class="question"><sup>13</sup>  A request to a higher court for review.</p>
+        <p class="question"><sup>14</sup> A legal case brought to court.</p>
+        <p class="question"><sup>15</sup>  When the government takes private property for public use.</p>
+        <p class="question"><sup>16</sup> The process of becoming a citizen.</p>
+        <p class="question"><sup>17</sup>  A legal term for an act or omission causing harm.</p>
+        <p class="question"><sup>18</sup> The formal questioning of a suspect.</p>
+        <p class="question"><sup>19</sup> A legal official who notarizes documents.</p>
+        <p class="question"><sup>20</sup> The process of returning a suspect to another jurisdiction.</p>
+    </div>
+
+    <script>
+        const answers = [
+            "WRIT", "INDICTMENT", "LIEN", "LAW", "YOURHONOR", 
+            "OATH", "UNILATERAL", "BAIL", "EVIDENCE", "MISDEMEANOR", 
+            "YOUTHFULOFFENDER", "VERDICT", "APPEAL", "LAWSUIT", "EMINENTDOMAIN", 
+            "NATURALIZATION", "TORT", "INTERROGATION", "NOTARY", "EXTRADITION"
+        ];
+
+        function createCrossword() {
+            const crosswordContainer = document.getElementById("crossword");
+            answers.forEach((word, i) => {
+                word.split("").forEach((letter, j) => {
+                    const cellElement = document.createElement("div");
+                    cellElement.classList.add("cell");
+
+                    const input = document.createElement("input");
+                    input.maxLength = 1;
+                    input.dataset.answerIndex = i;
+                    input.dataset.letterIndex = j;
+                    input.addEventListener("input", checkAnswer);
+
+                    if (j === 0) {
+                        const sup = document.createElement("span");
+                        sup.classList.add("sup");
+                        sup.innerText = i + 1;
+                        cellElement.appendChild(sup);
+                    }
+
+                    cellElement.appendChild(input);
+                    crosswordContainer.appendChild(cellElement);
+                });
+            });
+        }
+
+        function checkAnswer(event) {
+            const input = event.target;
+            const answerIndex = input.dataset.answerIndex;
+            const letterIndex = input.dataset.letterIndex;
+            const correctLetter = answers[answerIndex][letterIndex];
+
+            if (input.value.toUpperCase() === correctLetter) {
+                input.parentElement.classList.add("correct");
+                input.parentElement.classList.remove("incorrect");
+            } else {
+                input.parentElement.classList.add("incorrect");
+                input.parentElement.classList.remove("correct");
+            }
+
+            if (document.querySelectorAll('.cell.correct').length === answers.join('').length) {
+                setTimeout(() => {
+                    if (confirm("Is that a legally binding yes for you to be my valentine?")) {
+                        alert("Great! It's official! ❤");
+                    } else {
+                        alert("Maybe? We'll negotiate the terms! ⚖️");
+                    }
+                }, 500);
+            }
+        }
+
+        createCrossword();
+    </script>
+</body>
+</html>
